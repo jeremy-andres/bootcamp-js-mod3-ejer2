@@ -15,7 +15,7 @@ verificarEdad();
 // Función para verificar que el usuario es mayor de edad
 
 function verificarEdad() {
-    let edad = parseInt(prompt('Ingresa tu edad:'));
+    let edad = parseInt(prompt('Ingresa tu edad:', '18'));
     if (isNaN(edad)) {
         alert("Eso no es un número!");
         desactivarBoton();
@@ -42,8 +42,8 @@ function desactivarBoton() {
 
 // Función para pedir nombre y carrera
 function pedirNombreyCarrera() {
-    let respNombre = prompt("Ingresa tu nombre:");
-    let respCarrera = prompt('Ingresa tu carrera:');
+    let respNombre = prompt("Ingresa tu nombre:", "Juanita Perez");
+    let respCarrera = prompt('Ingresa tu carrera:', 'Desarrollo Web');
     let nombre = document.getElementById('nombre');
     let carrera = document.getElementById('carrera');
     nombre.innerHTML = respNombre;
@@ -54,20 +54,20 @@ function pedirNombreyCarrera() {
 let contadorRamos = 0; // Variable para contar los ramos ingresados
 
 function pedirDatos() {
-    let ramo = prompt("Ingresa tu ramo:");
+    let ramo = prompt("Ingresa tu ramo:", "Algoritmos");
     let nota1, nota2, nota3;
 
     do {
-        dato1 = prompt('Ingresa tu primera nota:');
+        dato1 = prompt('Ingresa tu primera nota para el ramo ' + ramo + ': ', '1.0');
     } while (isNaN(parseFloat(dato1)));
     do {
-        dato2 = prompt('Ingresa tu segunda nota:');
+        dato2 = prompt('Ingresa tu segunda nota para el ramo ' + ramo + ': ', '1.0');
     } while (isNaN(parseFloat(dato2)));
     if (contadorRamos === 2) { // Si es el tercer ramo ingresado (Recordar que se cuenta desde 0(0,1,2))
         nota3 = null; // Dejamos nota3 como null
     } else { // Si no es el tercer ramo ingresado
         do {
-            dato3 = prompt('Ingresa tu tercera nota:');
+            dato3 = prompt('Ingresa tu tercera nota para el ramo ' + ramo + ': ', '1.0');
         } while (isNaN(parseFloat(dato3)));
         nota3 = parseFloat(dato3);
     }
@@ -114,14 +114,20 @@ function agregarDatos(ramo, nota1, nota2, nota3) {
         let promedioActual = ((nota1 + nota2) / 2).toFixed(1); // Calcula el promedio con las 2 notas de ingresadas por usuario
     
         if (promedioActual < 4.0) { // Si el promedio es menor a 4.0
-            let notaFaltante = ((4.0 * 3) - (nota1 + nota2)) / 1; // Calcula la nota mínima necesaria
-            let promedioFinal = ((nota1 + nota2 + notaFaltante) / 3).toFixed(1); // Calcula nuevo promedio con la nota calculada anteriormente
-            let textoNota = document.getElementById('notaMinima') // Llama al párrafo
+            if (promedioActual < 2.4) {
+                let textoNota = document.getElementById('notaMinima'); // Llama al párrafo    
+                textoNota.innerHTML = 'Lo siento tus notas son demasido bajas, reprobaste.'; 
+            }
+            else {
+                let notaFaltante = ((4.0 * 3) - (nota1 + nota2)) / 1; // Calcula la nota mínima necesaria
+                let promedioFinal = ((nota1 + nota2 + notaFaltante) / 3).toFixed(1); // Calcula nuevo promedio con la nota calculada anteriormente
+                let textoNota = document.getElementById('notaMinima') // Llama al párrafo    
+                textoNota.innerHTML = 'La nota mínima que necesita para aprobar es ' + notaFaltante.toFixed(1) + ', obteniendo un promedio de '+ promedioFinal; // Agrega el texto con los datos obtenidos
+            }
             
-            textoNota.innerHTML = 'La nota mínima que necesita para aprobar es ' + notaFaltante.toFixed(1) + ', obteniendo un promedio de '+ promedioFinal; // Agrega el texto con los datos obtenidos
 
         } else { // Si el promedio actual es igual o mayor a 4.0
-            let textoNota = document.getElementById('notaMinima')
+            let textoNota = document.getElementById('notaMinima');
             textoNota.innerHTML = 'Actualmente apruebas el ramo con un promedio de '+ promedioActual; // Agrega el texto de aprobación
         }
     }
